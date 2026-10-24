@@ -44,6 +44,16 @@ void pinSpeed(GPIOPin_t pin, GPIOSpeed_t speed)
 	GPIOx->OTYPER |= (speed << (pin_num * 2));
 }
 
+void pinPullSelect(GPIOPin_t pin, GPIOPullType_t pull)
+{
+	uint8_t port = PORT_NUM(pin);
+	uint8_t pin_num = PIN_NUM(pin);
+	GPIO_TypeDef* GPIOx = GPIOx_TypeDef(port);
+
+	GPIOx->PUPDR &= ~(0b11UL << (pin_num * 2));
+	GPIOx->PUPDR |= (pull << (pin_num * 2));
+}
+
 void pinAFSelect(GPIOPin_t pin, GPIOAF_t af)
 {
 	uint8_t port = PORT_NUM(pin);
@@ -66,7 +76,7 @@ void pinWrite(GPIOPin_t pin, bool states)
 	uint8_t pin_num = PIN_NUM(pin);
 	GPIO_TypeDef* GPIOx = GPIOx_TypeDef(port);
 
-	if(states == LOW) {
+	if(states == HIGH) {
 		GPIOx->ODR |= (1UL << pin_num);
 	} else {
 		GPIOx->ODR &= ~(1UL << pin_num);

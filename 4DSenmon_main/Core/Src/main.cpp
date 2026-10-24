@@ -78,6 +78,17 @@ int main(void)
 	return 0;
 }
 
+void GPIO_Init(void)
+{
+	pinMode(LED_B, OUTPUT);		pinWrite(LED_B, HIGH);
+	pinMode(LED_R, OUTPUT);		pinWrite(LED_R, HIGH);
+
+	pinMode(DIP1, INPUT);		pinPullSelect(DIP1, PULLDOWN);
+	pinMode(DIP2, INPUT);		pinPullSelect(DIP2, PULLDOWN);
+	pinMode(DIP3, INPUT);		pinPullSelect(DIP3, PULLDOWN);
+	pinMode(DIP4, INPUT);		pinPullSelect(DIP4, PULLDOWN);
+}
+
 void Motor_Init(void)
 {
 	TIM_Init(TIM2, PWM_FREQ, PWM_RESOLUTION);
@@ -99,15 +110,4 @@ void Motor_Init(void)
 	M2_2_PWM(0);
 	M3_1_PWM(0);
 	M3_2_PWM(0);
-}
-
-void GPIO_Init(void)
-{
-	pinMode(LED_B, OUTPUT);		pinWrite(LED_B, HIGH);
-	pinMode(LED_R, OUTPUT);		pinWrite(LED_R, HIGH);
-
-	pinMode(DIP1, INPUT);		pinPullSelect(DIP1, PULLDOWN);
-	pinMode(DIP2, INPUT);		pinPullSelect(DIP2, PULLDOWN);
-	pinMode(DIP3, INPUT);		pinPullSelect(DIP3, PULLDOWN);
-	pinMode(DIP4, INPUT);		pinPullSelect(DIP4, PULLDOWN);
 }

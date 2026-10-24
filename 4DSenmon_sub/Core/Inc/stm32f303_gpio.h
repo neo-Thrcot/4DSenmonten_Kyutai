@@ -96,9 +96,17 @@ typedef enum
 	HIGHSPEED	= 3UL
 } GPIOSpeed_t;
 
+typedef enum
+{
+	NO_PULLUP_DOWN	= 0U,
+	PULLUP,
+	PULLDOWN
+} GPIOPullType_t;
+
 void pinMode(GPIOPin_t pin, GPIOMode_t mode);
 void pinType(GPIOPin_t pin, GPIOType_t type);
 void pinSpeed(GPIOPin_t pin, GPIOSpeed_t speed);
+void pinPullSelect(GPIOPin_t pin, GPIOPullType_t pull);
 void pinAFSelect(GPIOPin_t pin, GPIOAF_t af);
 
 void pinWrite(GPIOPin_t pin, bool states);

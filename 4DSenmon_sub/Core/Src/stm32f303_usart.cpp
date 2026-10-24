@@ -24,7 +24,7 @@ USART::USART(USART_TypeDef* usart_ch)
 
 	switch ((uint32_t)ch) {
 		case USART1_BASE:
-			APBxCLK = APB2CLK;
+			APBxCLK = APB1CLK;
 			break;
 
 		case USART2_BASE:
@@ -57,7 +57,7 @@ USART::USART(USART_TypeDef* usart_ch, GPIOPin_t rx, GPIOPin_t tx)
 
 	switch ((uint32_t)ch) {
 		case USART1_BASE:
-			APBxCLK = APB2CLK;
+			APBxCLK = APB1CLK;
 			break;
 
 		case USART2_BASE:
@@ -320,4 +320,4 @@ int __io_putchar(int ch)
 	return 0;
 }
 
-USART Serial(USART2, PA3, PA2);
+USART Serial(USART1, PA10, PA9);

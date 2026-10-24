@@ -21,9 +21,7 @@ void RCC_Init(void)
 	RCC->CFGR |= RCC_CFGR_SW_PLL;
 	while((RCC->CFGR & RCC_CFGR_SWS_Msk) != RCC_CFGR_SWS_PLL);
 
-	/*System timer config*/
-	RCC->APB1ENR |= RCC_APB1ENR_TIM6EN;
-	TIM6->CR1 &= (~(1 << 0));
+	SystemCoreClockUpdate();
 }
 
 void SysTick_Init(void)

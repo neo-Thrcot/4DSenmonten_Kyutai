@@ -76,7 +76,7 @@ void pinWrite(GPIOPin_t pin, bool states)
 	uint8_t pin_num = PIN_NUM(pin);
 	GPIO_TypeDef* GPIOx = GPIOx_TypeDef(port);
 
-	if(states == LOW) {
+	if(states == HIGH) {
 		GPIOx->ODR |= (1UL << pin_num);
 	} else {
 		GPIOx->ODR &= ~(1UL << pin_num);

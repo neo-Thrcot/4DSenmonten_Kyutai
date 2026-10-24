@@ -13,7 +13,9 @@
 #define SYSCLK			72000000
 #define AHBCLK			72000000
 #define APB1CLK			36000000
+#define APB1TIMCLK		72000000
 #define APB2CLK			72000000
+#define APB1TIMCLK		72000000
 
 #define ABS_DIFF(a, b)		((a > b) ? a - b : b - a)
 
