@@ -1,6 +1,7 @@
 #include <stm32f303_sys.h>
 
-static volatile uint32_t msTick = 0;
+static volatile uint32_t preTick = 0;
+static volatile uint32_t tickCarry = 0;
 
 void RCC_Init(void)
 {
@@ -21,28 +22,58 @@ void RCC_Init(void)
 	RCC->CFGR |= RCC_CFGR_SW_PLL;
 	while((RCC->CFGR & RCC_CFGR_SWS_Msk) != RCC_CFGR_SWS_PLL);
 
-	SystemCoreClockUpdate();
-}
+	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
-void SysTick_Init(void)
-{
+	preTick = DWT->CYCCNT;
+
 	SysTick->LOAD = (AHBCLK / 1000) - 1;
 	SysTick->VAL = 0;
-	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk |
+				     SysTick_CTRL_TICKINT_Msk |
+					 SysTick_CTRL_ENABLE_Msk;
 }
 
 void IncTick(void)
 {
-	msTick++;
+	if(DWT->CYCCNT < preTick) {
+		tickCarry++;
+	}
+	preTick = DWT->CYCCNT;
 }
 
-uint32_t GetTick(void)
+uint64_t GetTick(void)
 {
-	return msTick;
+	uint32_t tick;
+	uint32_t prev = preTick;
+	uint32_t carry = tickCarry;
+
+	tick = DWT->CYCCNT;
+	if(tick < prev) {
+		carry++;
+	}
+
+	return FULLTICK(carry, tick);
 }
 
-void delay(uint32_t ms)
+uint64_t millis(void)
 {
-	uint32_t start = msTick;
-	while((msTick - start) < ms);
+	return GetTick() / 72000;
+}
+
+uint64_t micros(void)
+{
+	return GetTick() / 72;
+}
+
+void delay_ms(uint64_t ms)
+{
+	uint64_t start = millis();
+	while((millis() - start) < ms);
+}
+
+void delay_us(uint64_t us)
+{
+	uint64_t start = micros();
+	while((micros() - start) < us);
 }

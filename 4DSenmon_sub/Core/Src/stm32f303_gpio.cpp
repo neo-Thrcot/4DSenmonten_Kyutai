@@ -24,7 +24,7 @@ void pinMode(GPIOPin_t pin, GPIOMode_t mode)
 	GPIOx->MODER |= (mode << (pin_num * 2));
 }
 
-void pinType(GPIOPin_t pin, GPIOType_t type)
+void pinOutType(GPIOPin_t pin, GPIOType_t type)
 {
 	uint8_t port = PORT_NUM(pin);
 	uint8_t pin_num = PIN_NUM(pin);

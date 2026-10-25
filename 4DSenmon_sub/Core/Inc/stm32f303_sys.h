@@ -17,22 +17,30 @@
 #define APB2CLK			72000000
 #define APB1TIMCLK		72000000
 
-#define ABS_DIFF(a, b)		((a > b) ? a - b : b - a)
+#define ABS_DIFF(a, b)			((a > b) ? a - b : b - a)
+#define FULLTICK(carry, tick)	(((uint64_t)(carry) << 32) | (tick))
 
-typedef enum {
-	SYS_OK		= 0,
+#define DISABLE					false
+#define ENABLE					true
+
+typedef enum
+{
+	SYS_OK		= 0UL,
 	SYS_ERROR,
 	SYS_BUSY,
 	SYS_TIMEOUT
-} SysError_t;
+}SysError_t;
 
 typedef void (*CallbackFunc_t)(void);
 
 void RCC_Init(void);
-void SysTick_Init(void);
 
 void IncTick(void);
-uint32_t GetTick(void);
-void delay(uint32_t ms);
+uint64_t GetTick(void);
+
+uint64_t millis(void);
+uint64_t micros(void);
+void delay_ms(uint64_t ms);
+void delay_us(uint64_t us);
 
 #endif /* INC_STM32F303_SYS_H_ */
